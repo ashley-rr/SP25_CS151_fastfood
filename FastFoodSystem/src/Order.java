@@ -7,6 +7,8 @@ public class Order implements Reportable {
     private int orderId;
     private Customer customer;
     private List<MenuItem> items;
+    private double usedGiftCard;
+    private boolean usedDiscount;
     //private double amountPaid;
 
     //Associate an order with a customer, assign order ID, initialize items list and amountPaid.
@@ -36,6 +38,21 @@ public class Order implements Reportable {
         return items;
     }
 
+    public void setUsedGiftCard(double d) {
+        usedGiftCard = d;
+    }
+
+    public double getUsedGiftCard() {
+        return usedGiftCard;
+    }
+
+    public void setUsesDiscount(boolean b) {
+        usedDiscount = b;
+    }
+
+    public boolean getUsesDiscount() {
+        return usedDiscount;
+    }
 
     // Sample idea for reportable interface
     @Override
@@ -49,7 +66,25 @@ public class Order implements Reportable {
         for (MenuItem item : items) {
             System.out.println("- " + item.getName() + " ($" + item.getPrice() + ")");
         }
-        System.out.println("Calculated Total: $" + calculateTotal());
+
+        double total = calculateTotal();
+        System.out.println("Calculated Total w/o Discounts or Gift Card: $" + total);
+        
+        if (getUsesDiscount() == true) {
+            total -= (total * 0.1);
+            System.out.println("Calculated Total left after using Discount: $" + total);
+        }
+
+        if (getUsedGiftCard() > 0 && total - getUsedGiftCard() <= 0) {
+            total -= getUsedGiftCard();
+            if (total <= 0) {
+                System.out.println("Calculated Total left after using Gift Card: $0");
+            }
+            else {
+                System.out.println("Calculated Total left after using Gift Card: $" + total);
+            }
+        }
+
         //System.out.println("Amount Paid: $" + amountPaid);
         System.out.println("------------------------");
     }

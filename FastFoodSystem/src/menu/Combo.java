@@ -6,7 +6,7 @@ public class Combo extends MenuItem{
   private static int objectCount = 0;
 
   public Combo() {
-    super.setPrice(Math.round((new Burger().getPrice() + new Fry().getPrice() + new Milkshake().getPrice())) + 0.50);
+    super.setPrice(Math.round((new Burger().getPrice() + new Fry().getPrice() + new Milkshake().getPrice())) - 1.5);
     super.setVegetarian(false);
     if(objectCount >= MAX_COMBOS) {
             throw new IllegalStateException("Max # of combos is 100. Creation failed.");
@@ -20,7 +20,7 @@ public class Combo extends MenuItem{
 	}
 	@Override
 	public double getPrice() {
-		return (new Burger().getPrice() + new Fry().getPrice() + new Milkshake().getPrice() * 0.85);
+		return (new Burger().getPrice() + new Fry().getPrice() + new Milkshake().getPrice() - 1.5);
 	}
 	@Override
 	public String toString() {

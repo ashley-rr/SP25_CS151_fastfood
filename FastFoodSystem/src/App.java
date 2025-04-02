@@ -43,8 +43,8 @@ public class App {
             "MENU\n" +
             "1. Burger - $4.25\n" +
             "2. Fry - $2.75\n" + 
-            "3. Milkshake $6.25\n" +
-            "4. Combo $" + (Math.round((new Burger().getPrice() + new Fry().getPrice() + new Milkshake().getPrice())) + 0.50) + "\n"
+            "3. Milkshake - $6.25\n" +
+            "4. Combo - $" + (Math.round((new Burger().getPrice() + new Fry().getPrice() + new Milkshake().getPrice())) - 1.5) + "\n"
         );
     }
 
@@ -91,7 +91,7 @@ public class App {
 
                         if (hasGiftCard.equalsIgnoreCase("y")) 
                         {
-                            double customerGiftCardBalance = Double.parseDouble(getInput("What is this customer's gift card balance?: \n"));
+                            double customerGiftCardBalance = Double.parseDouble(getInput("What is this customer's gift card balance?:"));
                             newCustomer.setGiftBalance(customerGiftCardBalance);
                         }
 
@@ -122,10 +122,12 @@ public class App {
                             }
                             printMenu();
 
-                            if (getInput("Would you like to use your gift card? y or n").equalsIgnoreCase("y")) 
+                            String willUseGiftCard = getInput("Would you like to use your gift card? (You currently have " + customerOrdering.getGiftBalance() + " remaining) y or n");
+                            double giftBalanceToUse = 0;
+                            if (willUseGiftCard.equalsIgnoreCase("y")) 
                             {
-                                System.out.printf("How much money from your gift card? (You currently have $%.2f remaining)", customerOrdering.getGiftBalance());
-                                double giftBalanceToUse = Double.parseDouble(getInput(""));
+                                System.out.println("How much money from your gift card?");
+                                giftBalanceToUse = Double.parseDouble(getInput(""));
                                 if (giftBalanceToUse > customerOrdering.getGiftBalance()) {
                                     System.out.println("Error: Input can't be greater than current gift card balance");
                                     break;
@@ -141,6 +143,14 @@ public class App {
 
                             System.out.println("What will " + customerOrdering.getName() + " order? (Enter 1-4, type anything else to exit)");
                             Order order = new Order(orderingCustomerID, customerList.get(orderingCustomerID)); //For now, orderingID will be the customerID
+                            
+                            if (willUseGiftCard.equalsIgnoreCase("y")) {
+                                order.setUsedGiftCard(giftBalanceToUse);
+                            }
+                            if (customerOrdering.getSpecialStatus() == true) {
+                                order.setUsesDiscount(true);
+                            }
+                            
                             while(true) {
                                 String option = getInput("Add item: ");
                                 if(option.equals("1")) {
