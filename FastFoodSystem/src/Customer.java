@@ -4,6 +4,7 @@ public class Customer extends Person implements Payable{
     private double balance;
     private double giftBalance;
     private boolean isWaitingOnOrder; 
+    private boolean isSpecialStatus;
     private Order currentOrder;
     private static final int MAX_CUSTOMERS = 100;
     private static int objectCount = 0;
@@ -60,6 +61,10 @@ public class Customer extends Person implements Payable{
 
     @Override
     public boolean processPayment(double amount) {
+        if (getSpecialStatus() == true) {
+            System.out.println("You qualify for a %7 discount!");
+            amount *= 0.07;
+        }
         if(balance < amount) {
             System.out.println("Insufficient balance.");
             return false;
@@ -115,6 +120,14 @@ public class Customer extends Person implements Payable{
 
     public double getGiftBalance() {
         return giftBalance;
+    }
+
+    public void setSpecialStatus(boolean s) {
+        isSpecialStatus = s;
+    }
+
+    public boolean getSpecialStatus() {
+        return isSpecialStatus;
     }
     
 }

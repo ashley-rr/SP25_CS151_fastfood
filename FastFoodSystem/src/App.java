@@ -79,10 +79,16 @@ public class App {
                             break;
                         }
                         String customerName = getInput("Enter customer name: ");
+                        String customerStatus = getInput("Does this customer qualify for a discount, as a Veteran, First Responder, Teacher, or Senior? y or n");
                         double customerBalance = Double.parseDouble(getInput("What is this customer's balance?: "));
                         String hasGiftCard = getInput("Does this customer have a gift card? y or n: ");
-
                         Customer newCustomer = new Customer(customerID, customerName, false, customerBalance);
+
+                        if (customerStatus.equalsIgnoreCase("y")) 
+                        {
+                            newCustomer.setSpecialStatus(true);
+                        }
+
                         if (hasGiftCard.equalsIgnoreCase("y")) 
                         {
                             double customerGiftCardBalance = Double.parseDouble(getInput("What is this customer's gift card balance?: \n"));
