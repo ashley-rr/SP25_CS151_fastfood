@@ -20,6 +20,10 @@ public class Milkshake extends MenuItem {
 		return "Milkshake";
 	}
 	@Override
+	public double getPrice() {
+		return 6.25;
+	}
+	@Override
 	public String toString() {
 		return super.toString() +"\nName: " +getName();
 

@@ -2,6 +2,7 @@ public class Customer extends Person implements Payable{
     
     private CashRegister registerToUse;
     private double balance;
+    private double giftBalance;
     private boolean isWaitingOnOrder; 
     private Order currentOrder;
     private static final int MAX_CUSTOMERS = 100;
@@ -100,5 +101,20 @@ public class Customer extends Person implements Payable{
         this.isWaitingOnOrder = waitingOnOrder;
     }
 
+    public void setBalance(double g) {
+        balance = g;
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+
+    public void setGiftBalance(double g) {
+        giftBalance = g;
+    }
+
+    public double getGiftBalance() {
+        return giftBalance;
+    }
     
 }

@@ -20,6 +20,10 @@ public class Burger extends MenuItem  {
 		return "Burger";
 	}
 	@Override
+	public double getPrice() {
+		return 4.25;
+	}
+	@Override
 	public String toString() {
 		return super.toString() +"\nName: " +getName();
 

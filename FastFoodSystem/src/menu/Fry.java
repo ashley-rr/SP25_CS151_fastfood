@@ -20,6 +20,10 @@ public class Fry extends MenuItem {
 		return "Fry";
 	}
 	@Override
+	public double getPrice() {
+		return 2.75;
+	}
+	@Override
 	public String toString() {
 		return super.toString() +"\nName: " +getName();
 

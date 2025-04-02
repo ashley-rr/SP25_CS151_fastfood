@@ -42,8 +42,9 @@ public class App {
         System.out.println(
             "MENU\n" +
             "1. Burger - $4.25\n" +
-            "2. Fry - 2.75\n" + 
-            "3. Milkshake 6.25\n" 
+            "2. Fry - $2.75\n" + 
+            "3. Milkshake $6.25\n" +
+            "4. Combo $" + (Math.round((new Burger().getPrice() + new Fry().getPrice() + new Milkshake().getPrice())) + 0.50) + "\n"
         );
     }
 
@@ -79,7 +80,15 @@ public class App {
                         }
                         String customerName = getInput("Enter customer name: ");
                         double customerBalance = Double.parseDouble(getInput("What is this customer's balance?: "));
+                        String hasGiftCard = getInput("Does this customer have a gift card? y or n: ");
+
                         Customer newCustomer = new Customer(customerID, customerName, false, customerBalance);
+                        if (hasGiftCard.equalsIgnoreCase("y")) 
+                        {
+                            double customerGiftCardBalance = Double.parseDouble(getInput("What is this customer's gift card balance?: \n"));
+                            newCustomer.setGiftBalance(customerGiftCardBalance);
+                        }
+
                         customerList.put(customerID, newCustomer);
                         break;
                     case "3":
@@ -106,7 +115,25 @@ public class App {
                                 break;
                             }
                             printMenu();
-                            System.out.println("What will " + customerOrdering.getName() + " order? (Enter 1-3, type anything else to exit)");
+
+                            if (getInput("Would you like to use your gift card? y or n").equalsIgnoreCase("y")) 
+                            {
+                                System.out.printf("How much money from your gift card? (You currently have $%.2f remaining)", customerOrdering.getGiftBalance());
+                                double giftBalanceToUse = Double.parseDouble(getInput(""));
+                                if (giftBalanceToUse > customerOrdering.getGiftBalance()) {
+                                    System.out.println("Error: Input can't be greater than current gift card balance");
+                                    break;
+                                }
+                                if (giftBalanceToUse == 0) {
+                                    System.out.println("Error: If you would not like to use your gift card, please answer 'n' to the question 'Would you like to use your gift card?'");
+                                    break;
+                                }
+                                customerOrdering.setGiftBalance(customerOrdering.getGiftBalance() - giftBalanceToUse);
+                                customerOrdering.setBalance(customerOrdering.getBalance() + giftBalanceToUse);
+                                System.out.printf("Your gift card balance has been added to your customer balance. You now have $%.2f in your customer balance, and $%.2f left in your gift card.\n\n", customerOrdering.getBalance(), customerOrdering.getGiftBalance());
+                            }
+
+                            System.out.println("What will " + customerOrdering.getName() + " order? (Enter 1-4, type anything else to exit)");
                             Order order = new Order(orderingCustomerID, customerList.get(orderingCustomerID)); //For now, orderingID will be the customerID
                             while(true) {
                                 String option = getInput("Add item: ");
@@ -116,13 +143,16 @@ public class App {
                                     order.addItem(new Fry());
                                 } else if(option.equals("3")) {
                                     order.addItem(new Milkshake());
+                                } else if(option.equals("4")) {
+                                    order.addItem(new Combo()); 
                                 } else {
                                     customerOrdering.placeOrder(order);
                                     break;
                                 }
-                            }     
+                            }
+                        }
                             
-                        } else {
+                         else {
                             System.out.println("Error: Invalid ID");
                         }
                         break;
@@ -227,6 +257,9 @@ public class App {
                                 break;
                             case "3":
                                 itemToRestock = new Milkshake();
+                                break;
+                            case "4":
+                                itemToRestock = new Combo();
                                 break;
                             default:
                                 System.out.println("Error: Invalid item choice.");
